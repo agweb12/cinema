@@ -1,0 +1,320 @@
+/********************************* Page Accueil ***********************************/
+h2 {
+
+    font-size: 5rem !important;
+    color: var(--red);
+    font-weight: bolder;
+}
+
+.films .row {
+
+    width: 90%;
+    margin: 0 auto;
+}
+
+.films>.row>div {
+
+    padding: 3rem
+}
+
+.card {
+
+    color: var(--gray);
+    box-shadow: var(--box-shadow-dark) !important;
+    transition: all 1s;
+
+}
+
+.card:hover {
+
+    cursor: pointer;
+    transform: scale(1.05);
+    box-shadow: var(--box-shadow-light) !important;
+}
+
+.card-body {
+
+    text-align: center;
+}
+
+.card-body h3 {
+
+    font-size: 3rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    font-weight: bolder;
+}
+
+.card-body h4 {
+
+    font-size: 2rem;
+    font-weight: 100;
+    padding-bottom: .8rem;
+    color: var(--gray);
+}
+
+img {
+    width: 100%;
+}
+
+a.btn,
+input.btnpanier {
+    background-color: var(--red) !important;
+    color: white;
+    padding: .8rem;
+    font-size: 1.3rem !important;
+    font-weight: bold;
+}
+
+/************************************* Page d'un film ********************************/
+
+.film {
+    width: 90%;
+    margin: 0 auto;
+    background-color: var(--gray);
+    padding: 2rem 3rem;
+    transition: all .5s;
+    box-shadow: var(--box-shadow-light) !important;
+
+}
+
+.film i {
+    font-size: 5rem !important;
+}
+
+.cardDetails {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.detailsImg img {
+    box-shadow: var(--box-shadow-light);
+}
+
+.detailsContent span {
+    color: #87556F;
+    font-size: 2.5rem;
+    font-weight: bolder;
+}
+
+/* .detailsContent  .row {
+    margin: 3rem 2rem;
+} */
+
+.detailsContent p,
+ul {
+    font-size: 2rem;
+}
+
+/******************** Page de gestion des films (formulaire) ************************/
+
+
+form.back {
+    width: 50%;
+    margin: 0 auto;
+    box-shadow: var(--box-shadow-light) !important;
+}
+
+form.back>div.row {
+    font-size: 1.8rem;
+}
+
+form.back .row {
+    padding: 2.5rem;
+    background-color: #212529;
+
+}
+
+form.back label:not(.form-check-label) {
+    margin-bottom: 1.6rem;
+    font-weight: bolder;
+    color: var(--black);
+
+}
+
+form.back .form-control {
+    font-size: 1.5rem !important;
+}
+
+form.back button {
+    font-size: 1.4rem !important;
+}
+
+
+.active {
+    background-color: var(--red) !important;
+    color: white !important;
+    font-weight: bolder;
+}
+
+
+table,
+.sidebarre {
+    background-color: #353535;
+    color: white !important;
+    box-shadow: var(--box-shadow-light) !important;
+}
+
+
+.bi {
+    color: var(--red);
+    font-size: 1.8rem;
+}
+
+/*
+input{
+    outline: 1px solid var(--red) !important;
+
+} */
+/* Footer */
+
+footer {
+
+    background-color: var(--black);
+    height: 100px !important;
+
+}
+
+/* Page panier */
+
+.panier img {
+    width: 40px;
+    padding: 8px 0;
+}
+
+.panier div {
+    width: 80%;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+table {
+    border-collapse: collapse;
+    /* width: 100%; */
+
+}
+
+th {
+    padding: 10px 0;
+    font-weight: 400;
+}
+
+
+
+
+
+/* classe pour cacher les card quand on click sur une  */
+.hidden {
+    padding: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    transition: all .5s;
+}
+
+
+
+
+
+/* Card profil */
+
+.cardFilm {
+    position: relative;
+    width: 700px;
+    /* height: 500px; */
+    background: #000;
+}
+
+.cardFilm .image {
+    width: 80%;
+    margin: 0 auto;
+    height: 100%;
+    overflow: hidden;
+}
+
+.cardFilm .image img {
+
+    transition: .5s;
+}
+
+.cardFilm:hover .image img {
+    opacity: .5;
+    transform: translateX(30%);
+}
+
+.cardFilm .details {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 70%;
+    height: 100%;
+    background: var(--red);
+    transition: .5s;
+    transform-origin: left;
+    transform: perspective(2000px) rotateY(-90deg);
+}
+
+.cardFilm:hover .details {
+    transform: perspective(2000px) rotateY(0deg);
+}
+
+.cardFilm .details .center {
+    padding: 80px !important;
+    text-align: center;
+    background: #fff;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* PASSWORD*/
+.positionPassword,
+.positionPasswordConfirm {
+    position: relative;
+}
+
+.iconPassword,
+.iconPasswordConfirm {
+    position: absolute;
+    right: .3rem;
+    top: 0;
+    font-size: 1.5rem;
+}
+
+
+textarea.inputChange {
+    border: 0px solid rgba(255, 255, 255, 0) !important;
+    border-radius: .3rem !important;
+
+}
+
+
+/* ALERT ET BAR DE PROGRESSION */
+.alert {
+    transition: opacity 0.5s ease-in-out;
+}
+
+.progress-bar {
+    transition: width 0.1s linear;
+}
+
+#alertMessage {
+    position: fixed;
+    top: var(--navbar-height);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1040;
+    /* Juste en-dessous de la navbar */
+    width: 90%;
+    max-width: 300px;
+    margin: 1rem 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.alert.fade {
+    opacity: 0;
+}
+
+.alert.fade.show {
+    opacity: 1;
+}

@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&display=swap');
+
+:root {
+    --navbar-height: 10rem;
+    --red: #BB2D3B;
+    --gray: #191A19;
+    --gray-2: #353535;
+    --gray-light: #BBBBBB;
+    --black: #000;
+    --box-shadow-dark: 0px 5px 10px 0px rgba(50, 50, 50, .8);
+    --box-shadow-light: -1px 1px 10px 0px #EFE8E8;
+    ;
+    font-size: 62.5%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: "Dosis";
+    /* box-shadow: 0 0 0 3px red inset; */
+}
+
+
+body {
+    font-size: 1.6rem;
+
+    background-color: var(--gray);
+    color: #fff;
+
+
+}
+
+nav {
+    background-color: #ffffff !important;
+    margin-bottom: 5rem !important;
+}
+
+h1 {
+    font-size: 4rem !important;
+    margin: .8rem 4rem;
+    font-weight: bolder;
+
+
+}
+
+h1 a {
+    font-size: 4rem !important;
+    color: var(--red) !important;
+}
+
+h1 img {
+    width: 50px !important;
+    height: 50px !important;
+
+}
+
+nav li a {
+    color: var(--black) !important;
+    margin: 0.8rem;
+}
+
+nav li a.dropdown-item {
+    padding: 0.8rem;
+}
+
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+    width: 100% !important;
+    background-color: var(--red) !important;
+
+    /* margin: 0 !important; */
+    color: white !important;
+}
+
+nav .navbar-toggler {
+    background-color: var(--red);
+    font-size: 1.7rem;
+}
+
+main {
+    padding: 10rem 4rem;
+    /* margin-top: 10rem !important; */
+    min-height: 815px;
+    /* je le met afin d'empêcher le footer de rementer dans la page*/
+    transition: all .2s;
+}
