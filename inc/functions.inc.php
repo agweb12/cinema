@@ -545,6 +545,33 @@ function sixFilms(): mixed
     return $result;
 }
 
+#### Afficher tous les films d'une catégorie
+function allFilmsByCategory(int $id): mixed
+{
+    $pdo = connexionBDD();
+    $sql = "SELECT
+    films.id AS id, 
+    categories.nom AS genre, 
+    title,
+    director,
+    actors,
+    ageLimit,
+    duration,
+    synopsis,
+    date,
+    image,
+    price,
+    stock
+    FROM films
+    INNER JOIN categories ON films.categorie_id = categories.id 
+    WHERE films.categorie_id = :id
+    ORDER BY title ASC";
+    $request = $pdo->prepare($sql);
+    $request->execute(array(':id' => $id));
+    $result = $request->fetchAll();
+    return $result;
+}
+
 #### Vérifier si le film existe déjà
 function filmExist(string $title): mixed
 {
