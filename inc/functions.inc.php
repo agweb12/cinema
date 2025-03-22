@@ -1,7 +1,8 @@
 <?php
 session_start(); // session_start() est une fonction qui permet de démarrer une session PHP. Une session est une manière de stocker des informations (variables) pour être utilisées sur plusieurs pages. Les informations stockées dans une session sont accessibles à chaque page du site pendant la durée de la session.
 // session_start() doit être appelée avant tout code HTML ou espace blanc dans votre script PHP. Si vous avez des erreurs de session, assurez-vous que vous n'avez pas d'espaces ou de lignes vides avant session_start() ou après session_start().
-
+#### Constante pour définir le chemin du site
+define("RACINE_SITE", "http://localhost/cinema/");
 
 #### Condition pour se déconnecter
 if (isset($_GET['action']) && $_GET['action'] === "deconnexion") {
@@ -13,11 +14,10 @@ if (isset($_GET['action']) && $_GET['action'] === "deconnexion") {
 
     //ca dépend de l'objectif du site. Dnas notre cas, c'est un site e-commerce qui va gérer des paniers utilisateur, donc on supprime la clé "user" de la session
     unset($_SESSION['user']); // On supprime l'indice 'user' de la session pour s edéconnecter, cette fonction détruit les élément du tableau $_SESSION['user']
-    header("location:" . RACINE_SITE . "index.php");
+    header("Location:" . RACINE_SITE . "index.php");
 }
 
-#### Constante pour définir le chemin du site
-define("RACINE_SITE", "http://localhost/cinema/");
+
 
 #### Création d'une fonction alerte
 function alert(string $message, string $type = "danger"): string
