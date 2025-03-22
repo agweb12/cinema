@@ -19,12 +19,9 @@ if (!isset($_SESSION['current_order_id'])) {
 $order_id = $_SESSION['current_order_id'];
 
 // Récupérer les informations de la commande depuis la base de données
-$pdo = connexionBDD();
-$sql = "SELECT * FROM orders WHERE id = :order_id";
-$request = $pdo->prepare($sql);
-$request->execute(array(':order_id' => $order_id));
-$order = $request->fetch();
+$order = getOrder($order_id);
 
+// Vérifier si la commande existe ou pas
 if (!$order) {
     $_SESSION['info'] = alert("Commande introuvable", "danger");
     header("Location: " . RACINE_SITE . "boutique/cart.php");
@@ -32,14 +29,8 @@ if (!$order) {
 }
 
 // Récupérer les détails de la commande
-$sql = "SELECT od.*, f.title, f.image 
-        FROM order_details od 
-        JOIN films f ON od.film_id = f.id 
-        WHERE od.order_id = :order_id";
-$request = $pdo->prepare($sql);
-$request->execute(array(':order_id' => $order_id));
-$order_details = $request->fetchAll();
-
+$order_details = getOrderDetails($order_id);
+// debug($order_details);
 // Récupérer le total de la commande
 $total = $order['price'];
 
@@ -49,11 +40,8 @@ $user = $_SESSION['user'];
 // Traitement du formulaire de confirmation de commande
 if (isset($_POST['confirm_order'])) {
     if (isset($_POST['payment_method'])) {
-        // Mettre à jour le statut de la commande en "payé"
-        $sql = "UPDATE orders SET is_paid = 'payé' WHERE id = :order_id";
-        $request = $pdo->prepare($sql);
-        $request->execute(array(':order_id' => $order_id));
-        
+        // Mettre à jour le statut de la commande en "payé" lorsque l'utilisateur paye la commande
+        payOrder($order_id);
         // Sauvegarder les détails de la commande pour affichage dans la page de succès
         $_SESSION['lastOrder'] = $order_details;
         $_SESSION['lastOrderTotal'] = $total;
@@ -78,7 +66,7 @@ require_once("../inc/header.inc.php");
 
 <div class="container mt-5" style="padding-top:8rem;">
     <h2 class="text-center fw-bolder mb-5 text-danger">Finalisation de la commande</h2>
-    
+
     <?php if (isset($error)): ?>
         <div class="alert alert-danger"><?= $error ?></div>
     <?php endif; ?>
@@ -99,8 +87,18 @@ require_once("../inc/header.inc.php");
                             </tr>
                         </thead>
                         <tbody>
+                            <?php
+                            echo "order details";
+                            debug($order_details);
+                            echo "order";
+                            debug($order);
+                            echo "session de l'ID de la commande en cours";
+                            debug($_SESSION['current_order_id']);
+                            echo "session du panier";
+                            debug($_SESSION['panier']);
+                            ?>
                             <?php foreach($order_details as $detail):
-                                debug($detail);
+                                // debug($detail);
                                 ?>
                             <tr>
                                 <td><?= $detail['title'] ?></td>

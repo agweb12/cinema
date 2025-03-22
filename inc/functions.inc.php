@@ -661,12 +661,6 @@ function addOrder(int $user_id, float $price): int
 // La fonction addOrderDetails prend en paramètres l'identifiant de la commande, l'identifiant du film, le prix du film et la quantité. Elle insère les détails de la commande dans la table order_details avec l'identifiant de la commande, l'identifiant du film, le prix du film et la quantité.
 function addOrderDetails(int $order_id, int $film_id, float $price_film, int $quantity): void
 {
-    echo "Debug addOrderDetails - Paramètres reçus : order_id=$order_id, film_id=$film_id, price=$price_film, quantity=$quantity<br>";
-    
-    if ($order_id <= 0) {
-        throw new Exception("ID de commande invalide : $order_id");
-    }
-
     $pdo = connexionBDD();
     $sql = "INSERT INTO order_details (order_id, film_id, price_film, quantity) VALUES (:order_id, :film_id, :price_film, :quantity)";
     $request = $pdo->prepare($sql);
@@ -675,17 +669,6 @@ function addOrderDetails(int $order_id, int $film_id, float $price_film, int $qu
     $request->bindValue(':price_film', $price_film, PDO::PARAM_STR);
     $request->bindValue(':quantity', $quantity, PDO::PARAM_INT);
     $request->execute();
-
-    try {
-        $result = $request->execute();
-        if (!$result) {
-            throw new Exception("Échec de l'insertion des détails de commande");
-        }
-        echo "Détail de commande ajouté avec succès pour le film ID: $film_id<br>";
-    } catch (PDOException $e) {
-        echo "Erreur PDO dans addOrderDetails: " . $e->getMessage() . "<br>";
-        throw $e;
-    }
 }
 
 // Fonction pour afficher les commandes d'un utilisateur
@@ -736,12 +719,12 @@ function payOrder(int $order_id): void
 
 // Récupérer les informations de la commande depuis la base de données
 // La fonction getOrderDetails prend en paramètre l'identifiant de la commande et retourne les détails de cette commande. Elle utilise une requête préparée pour éviter les injections SQL.
-function getOrder(int $order_id): mixed
+function getOrder(int $id): mixed
 {
     $pdo = connexionBDD();
-    $sql = "SELECT * FROM orders WHERE id = :order_id";
+    $sql = "SELECT * FROM orders WHERE id = :id";
     $request = $pdo->prepare($sql);
-    $request->execute(array(':order_id' => $order_id));
+    $request->execute(array(':id' => $id));
     $result = $request->fetch();
     return $result;
 }
@@ -759,8 +742,6 @@ function getOrderDetails(int $order_id): mixed
     $result = $request->fetchAll();
     return $result;
 }
-
-
 
 // ADMINISTRATION DES COMMANDES
 function allOrders(): mixed

@@ -1,6 +1,8 @@
 <?php
 require_once("../inc/functions.inc.php");
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 /*
 Création d'une variable de session pour les messages :
 
@@ -22,8 +24,12 @@ if(isset($_SESSION['info'])) {
     $info = $_SESSION['info'];
     unset($_SESSION['info']);
 }
+
+if(!isset($_SESSION['order_token'])){
+    $_SESSION['order_token'] = bin2hex(random_bytes(32)); // Générer un token unique pour la commande qui permet de vérifier l'authenticité de la commande et éviter les attaques CSRF (Cross-Site Request Forgery)
+}
 // Traitement de l'ajout au panier
-if($_POST['action'] == 'ajout'){
+if(isset($_POST['action']) && $_POST['action'] == 'ajout'){
     $id_film = (int) $_POST['id'];
     $quantity = (int) $_POST['quantity'];
     $title = htmlspecialchars($_POST['title']);
@@ -90,14 +96,22 @@ if (isset($_GET['vider']) && $_GET['vider'] == 1) {
 
 // Traitement pour créer la commande
 if(isset($_POST['action']) && $_POST['action'] == 'payer'){
-    debug($_POST);
-    debug($_SESSION['panier']);
     // Vérifier si l'utilisateur est connecté
     if(!isset($_SESSION['user'])){
         $_SESSION['info'] = alert("Veuillez vous connecter pour finaliser votre commande", "warning");
         header('Location:' .RACINE_SITE. 'authentification.php');
         exit();
     }
+
+    // Vérifier le token
+    if(!isset($_POST['token']) || !isset($_SESSION['order_token']) || $_POST['token'] !== $_SESSION['order_token']) {
+        $_SESSION['info'] = alert("Erreur de validation du formulaire", "danger");
+        header('Location: ' . RACINE_SITE . 'boutique/cart.php');
+        exit();
+    }
+    
+    // Supprimer le token
+    unset($_SESSION['order_token']);
 
     // Vérifier si le panier n'est pas vide
     if(empty($_SESSION['panier'])){
@@ -114,9 +128,8 @@ if(isset($_POST['action']) && $_POST['action'] == 'payer'){
 
     // Récupérer l'ID de l'utilisateur connecté
     $user_id = $_SESSION['user']['id'];
-    
     try{
-    // Utiliser la fonction addOrder pour créer la commande dans la table orders
+        // Utiliser la fonction addOrder pour créer la commande dans la table orders
         // Cette fonction ajoute une nouvelle commande avec le statut "en attente" par défaut
         // echo "Ajout d'une commande pour l'utilisateur ID: $user_id avec un total de: $total_panier<br>";
 
@@ -141,17 +154,17 @@ if(isset($_POST['action']) && $_POST['action'] == 'payer'){
             // echo "Ajout de détails pour le film ID: {$film['id']}, quantité: {$film['quantity']}<br>";
 
             // Vérifier les valeurs avant l'appel
-        // echo "Valeurs passées: order_id=$order_id, film_id={$film['id']}, price={$film['price']}, quantity={$film['quantity']}<br>";
+            // echo "Valeurs passées: order_id=$order_id, film_id={$film['id']}, price={$film['price']}, quantity={$film['quantity']}<br>";
 
             addOrderDetails($order_id, $film['id'], $film['price'], $film['quantity']);
 
             // echo "Détails ajoutés avec succès pour le film ID: {$film['id']}<br>";
         }
-        echo "Tous les détails ont été ajoutés avec succès!<br>";
+        // echo "Tous les détails ont été ajoutés avec succès!<br>";
 
         // Stocker l'ID de la commande en session pour le récupérer dans checkout.php
         $_SESSION['current_order_id'] = $order_id;
-        echo "ID de commande stocké en session: {$_SESSION['current_order_id']}<br>";
+        // echo "ID de commande stocké en session: {$_SESSION['current_order_id']}<br>";
         // Rediriger vers la page de paiement (checkout.php)
         $_SESSION['info'] = alert("Votre commande a été créée avec succès. Veuillez procéder au paiement.", "success");
         header('Location: ' . RACINE_SITE . 'boutique/checkout.php');
@@ -163,10 +176,10 @@ if(isset($_POST['action']) && $_POST['action'] == 'payer'){
         echo "Trace: " . $e->getTraceAsString() . "<br>";
         // En cas d'erreur, afficher un message d'erreur
         $_SESSION['info'] = alert("Une erreur est survenue lors de la création de la commande : " . $e->getMessage(), "danger");
-        header('Location: ' . RACINE_SITE . 'boutique/cart.php');
-        exit();
+        // header('Location: ' . RACINE_SITE . 'boutique/cart.php');
+        // exit();
     }
-    
+
 }
 $total = 0;
 
@@ -185,6 +198,7 @@ require_once("../inc/header.inc.php");
                 </div>
             <?php else: ?>
                     <!-- le paramètre vider=1 pour indiquer qu'il faut vider le panier. -->
+                     <?php debug($_SESSION['panier']);?>
                     <a href="<?= RACINE_SITE ?>boutique/cart.php?vider=1" class="btn align-self-end mb-5">Vider le panier</a>
 
                 <table class="fs-4">
@@ -219,6 +233,7 @@ require_once("../inc/header.inc.php");
                 <form action="cart.php" method="post">
                     <input type="hidden" name="action" value="payer">
                     <input type="hidden" name="total" value="<?= $total ?>">
+                    <input type="hidden" name="token" value="<?= $_SESSION['order_token'] ?>">
                     <button type="submit" class="btn btn-danger mt-5 p-3" id="checkout-button">Passer à la commande</button>
               </form>
         </div>
