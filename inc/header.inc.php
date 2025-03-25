@@ -87,7 +87,15 @@
                         <?php endif; ?>
                         <?php if (!isset($_SESSION['user'])): ?><?php endif; ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= RACINE_SITE; ?>boutique/cart.php"><i class="bi bi-cart fs-2"><sup></sup></i></a>
+                            <a class="nav-link" href="<?= RACINE_SITE; ?>boutique/cart.php"><i class="bi bi-cart fs-2">
+                                <?php if(isset($_SESSION['panier'])): ?>
+                                    <sup>
+                                        <?= count($_SESSION['panier']) ?>
+                                    </sup>
+                                <?php else: ?>
+                                    <sup></sup>
+                                <?php endif; ?>
+                            </i></a>
                         </li>
                     </ul>
                 </div>

@@ -87,16 +87,6 @@ require_once("../inc/header.inc.php");
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            echo "order details";
-                            debug($order_details);
-                            echo "order";
-                            debug($order);
-                            echo "session de l'ID de la commande en cours";
-                            debug($_SESSION['current_order_id']);
-                            echo "session du panier";
-                            debug($_SESSION['panier']);
-                            ?>
                             <?php foreach($order_details as $detail):
                                 // debug($detail);
                                 ?>

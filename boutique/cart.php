@@ -187,8 +187,6 @@ require_once("../inc/header.inc.php");
 ?>
 
 <div class="panier d-flex justify-content-center" style="padding-top:8rem;">
-
-
         <div class="d-flex flex-column  mt-5 p-5">
             <h2 class="text-center fw-bolder mb-5 text-danger">Mon panier</h2>
             <?= $info; ?>
@@ -198,7 +196,6 @@ require_once("../inc/header.inc.php");
                 </div>
             <?php else: ?>
                     <!-- le paramètre vider=1 pour indiquer qu'il faut vider le panier. -->
-                     <?php debug($_SESSION['panier']);?>
                     <a href="<?= RACINE_SITE ?>boutique/cart.php?vider=1" class="btn align-self-end mb-5">Vider le panier</a>
 
                 <table class="fs-4">
