@@ -110,7 +110,7 @@ if (!empty($_POST)) {
                 $info .= alert("Erreur lors du téléchargement de l'image", "danger");
             }
         }
-        
+
 
         // $regexActors permet de vérifier que les acteurs sont séparés par un / et que les acteurs ayant un tiret ou un point ne sont pas séparés par un /
         $regexActors = "/^([a-zA-Zéèêëàâôîïç\-\'\.\s]+(\/[a-zA-Zéèêëàâôîïç\-\'\.\s]+)*)$/";
