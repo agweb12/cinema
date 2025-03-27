@@ -23,8 +23,6 @@ $info = "";
 // je vérifie si l'utilisateur a cliqué sur le bouton créer
 if (!empty($_POST)) {
     $verification = true;
-    // debug($_POST);
-    // die;
     foreach ($_POST as $key => $value) {
         if (empty(trim($value))) {
             $verification = false;
@@ -113,13 +111,16 @@ if (!empty($_POST)) {
 
 
         // $regexActors permet de vérifier que les acteurs sont séparés par un / et que les acteurs ayant un tiret ou un point ne sont pas séparés par un /
-        $regexActors = "/^([a-zA-Zéèêëàâôîïç\-\'\.\s]+(\/[a-zA-Zéèêëàâôîïç\-\'\.\s]+)*)$/";
+        $regexChiffres = "/[0-9]/";
+        $regexActors = "/.*\/.*/";
+         //Explications: 
+            //    .* : correspond à n'importe quel nombre de caractères (y compris zéro caractère), sauf une nouvelle ligne.
+            //     \/ : correspond au caractère /. Le caractère / doit être précédé d'un backslash \ car il est un caractère spécial en expression régulière. Le backslash est appelé caractère d'échappement et il permet de spécifier que le caractère qui suit doit être considéré comme un caractère ordinaire.
+            //     .* : correspond à n'importe quel nombre de caractères (y compris zéro caractère), sauf une nouvelle ligne.
+            // vérification des acteurs existants
 
-        // vérification des acteurs existants
-        if (!isset($_POST['actors']) || strlen(trim($_POST['actors'])) > 3000 || strlen(trim($_POST['actors'])) < 2) {
-            $info .= alert("Le champs des acteurs n'est pas valide", "danger");
-        } elseif (!preg_match($regexActors, $_POST['actors'])) {
-            $info .= alert("Les acteurs doivent être séparés par un /", "danger");
+        if(!isset($_POST['actors']) ||  strlen($_POST['actors']) < 3 || preg_match($regexChiffres, $_POST['actors']) || !preg_match($regexActors, $_POST['actors']) ){ 
+            $info .= alert("Le champ acteurs n'est pas valide, il faut séparer les acteurs avec le symbole","danger");
         }
 
 
@@ -158,7 +159,7 @@ if (!empty($_POST)) {
             $image = str_replace(")", "_", $image); // je remplace les parenthèses par des underscores
             
             // je vérifie si le film existe déjà
-            $filmExiste = filmExist($title);
+            $filmExiste = filmExist($title, $date);
 
             if (isset($_GET['action']) && $_GET['action'] == "update") {
                 // je récupère l'id du film
@@ -221,8 +222,8 @@ require_once("../inc/header.inc.php");
                 <br>                
                 <input type="file" name="image" id="image">
             <!-- Champ caché pour stocker le nom de l'image existante -->
-            <input type="hidden" name="existing_image" value="<?= $fileImageUpdate ?? "" ?>">
             <?php if (isset($fileImageUpdate)): ?>
+                <input type="hidden" name="existing_image" value="<?= $fileImageUpdate ?? "" ?>">
                 <img src="../assets/img/<?= $fileImageUpdate ?>" alt="affiche du film" class="img-fluid mt-2">
             <?php endif; ?>
             </div>

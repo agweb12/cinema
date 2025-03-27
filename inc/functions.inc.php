@@ -573,12 +573,13 @@ function allFilmsByCategory(int $id): mixed
 }
 
 #### Vérifier si le film existe déjà
-function filmExist(string $title): mixed
+function filmExist(string $title, string $date): mixed
 {
     $pdo = connexionBDD();
-    $sql = "SELECT title FROM films WHERE title = :title";
+    $sql = "SELECT title FROM films WHERE title = :title and date = :date";
     $request = $pdo->prepare($sql);
     $request->bindValue(':title', $title, PDO::PARAM_STR);
+    $request->bindValue(':date', $date, PDO::PARAM_STR);
     $request->execute();
     $result = $request->fetch();
     return $result;
