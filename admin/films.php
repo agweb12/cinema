@@ -61,7 +61,7 @@ require_once("../inc/header.inc.php");
                     <td> 
                         <ul>
                             <?php 
-                            $actors = explode('/', trim($film['actors'], '/'));
+                            $actors = explode('/', trim(trim($film['actors'], '/')));
                             // debug($actors);
                             foreach($actors as $actor): ?>
 
